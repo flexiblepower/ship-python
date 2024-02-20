@@ -1,0 +1,28 @@
+{
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
+  },
+  "python.analysis.typeCheckingMode": "basic",
+  "python.testing.unittestArgs": [
+    "-v",
+    "-s",
+    "./unit_test",
+    "-p",
+    "test_*.py"
+  ],
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.autoTestDiscoverOnSaveEnabled": true,
+  "mypy.runUsingActiveInterpreter": true,
+  "isort.args": [
+    "--profile",
+    "black"
+  ],
+  "terminal.integrated.env.windows": {
+    "PYTHONPATH": "${workspaceFolder}/src"
+  },
+}

@@ -1,0 +1,97 @@
+[project]
+name = "ship-python"
+dynamic = ["version"]
+authors = [
+    { name = "Sebastiaan la Fleur", email = "sebastiaan.lafleur@tno.nl" },
+]
+description = "The EEBus SHIP protocol in Python."
+readme = "README.md"
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Information Technology",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
+dependencies = [
+    "cryptography",
+    "websockets",
+    "zeroconf"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pip-tools~=7.3.0",
+    "black~=22.1.0",
+    "flake8==6.0.0",
+    "Flake8-pyproject==1.2.3",
+    "pytest ~=7.3.1",
+    "pytest-cov ~=4.0.0",
+    "bump2version==1.0.1",
+    "mypy ~= 1.5.1",
+    "isort==5.13.2",
+    "build ~= 1.0.3",
+]
+
+[project.urls]
+homepage = "https://s2standard.org/"
+documentation = "https://readthedocs.org"
+repository = "https://github.com/flexiblepower/ship-python"
+changelog = "https://github.com/flexiblepower/ship-python/blob/main/CHANGELOG.md"
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+    "setuptools ~= 69.0.3",
+    "wheel ~= 0.40.0",
+    "setuptools-git-versioning<2",
+]
+
+[tool.setuptools-git-versioning]
+enabled = true
+
+[tool.pytest.ini_options]
+addopts = "--cov=shipproto --cov-report html --cov-report term-missing --cov-fail-under 95"
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.flake8]
+exclude = ['.venv/*', 'venv/*', 'doc/*']
+ignore = [
+    'Q000', # Remove bad quotes
+    'D401', # Docstring First line should be imperative
+    'E203', # Space before colon (not PEP-8 compliant, and conflicts with black)
+    'C408', # Suggestion to use dict() over {}
+    'W503', # Starting lines with operators.
+]
+per-file-ignores = ['__init__.py:F401', 'test_main.py:D100,D101,D102,D103']
+max-line-length = 100
+count = true
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+exclude = ['.venv/*', 'venv/*', 'doc/*', 'ci/*']
+
+# mypy per-module options:
+[[tool.mypy.overrides]]
+module = "unit_test.*"
+check_untyped_defs = true
+ignore_missing_imports = true

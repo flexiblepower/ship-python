@@ -1,0 +1,37 @@
+name: PyPi release
+run-name: Releasing next version 🚀
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  pypi-publish:
+    name: upload release to PyPI
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.8" ]
+    # Specifying a GitHub environment is optional, but strongly encouraged
+    environment: release
+    permissions:
+      # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          fetch-depth: 0
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      - run: |
+          ./ci/linux/create_venv.sh
+          ./ci/linux/install_dependencies.sh
+
+      - name: build
+        run: |
+          ./ci/linux/build_python_package.sh
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
