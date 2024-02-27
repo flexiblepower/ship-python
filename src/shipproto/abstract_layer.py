@@ -1,0 +1,2 @@
+class AbortConnectionException(Exception):
+    pass
