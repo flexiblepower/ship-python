@@ -22,6 +22,8 @@ What is implemented:
 
 ## Trying it out
 
+Install the `requirements.txt`.
+
 To start the server:
 ```bash
 PYTHONPATH="src/" python3 -m shipproto.shipproto
