@@ -15,6 +15,7 @@ from shipproto.connection_layers.abstract_layer import AbortConnectionException
 from shipproto.connection_layers.cmi_layer import CMILayerClient
 from shipproto.connection_layers.csh_layer import CSHLayer
 from shipproto.connection_layers.cshp_layer import CSHPClientLayer
+from shipproto.connection_layers.data_layer import SHIPDataConnection
 from shipproto.connection_layers.pin_layer import PinLayer
 from shipproto.trust_manager import TrustManager
 
@@ -46,7 +47,7 @@ async def main_tls():
 
 
 async def decide_if_ski_is_trusted(ski: str, decide_to_trust: Coroutine[None, None, None]) -> None:
-    sleep_seconds = 10
+    sleep_seconds = 2
     log.debug("Deciding if to trust %s. Waiting %s sec to mimic user input", ski, sleep_seconds)
     await asyncio.sleep(sleep_seconds)
     log.debug("Decided to trust %s", ski)
@@ -73,6 +74,11 @@ async def main_sme():
             log.debug("Starting PIN.")
             await PinLayer(websocket, "server").run()
             log.debug("Finished PIN.")
+
+            conn = SHIPDataConnection("S2", "server", websocket)
+            await conn.send_data("This is a fake S2 message from the client")
+            print(await conn.recv_data())
+
         except AbortConnectionException:
             log.error("Closing connection due to SHIP connection issue.")
             await websocket.close()
