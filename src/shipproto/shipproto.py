@@ -11,10 +11,10 @@ from websockets.server import serve, WebSocketServerProtocol
 
 import logging
 
-from shipproto.abstract_layer import AbortConnectionException
-from shipproto.cmi_layer import CMILayerServer
-from shipproto.csh_layer import CSHLayer
-from shipproto.cshp_layer import CSHPServerLayer
+from shipproto.connection_layers.abstract_layer import AbortConnectionException
+from shipproto.connection_layers.cmi_layer import CMILayerServer
+from shipproto.connection_layers.csh_layer import CSHLayer
+from shipproto.connection_layers.cshp_layer import CSHPServerLayer
 from shipproto.trust_manager import TrustManager
 
 root_logger = logging.getLogger()

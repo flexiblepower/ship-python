@@ -4,7 +4,7 @@ import asyncio
 import logging
 from enum import IntEnum
 
-from shipproto.abstract_layer import AbortConnectionException
+from shipproto.connection_layers.abstract_layer import AbortConnectionException
 from shipproto.finish_first import FinishFirst
 from shipproto.websocket import Websocket
 

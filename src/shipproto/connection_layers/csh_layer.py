@@ -7,7 +7,7 @@ from datetime import timedelta
 from enum import IntEnum, Enum
 from typing import Dict, Any, Optional
 
-from shipproto.abstract_layer import AbortConnectionException
+from shipproto.connection_layers.abstract_layer import AbortConnectionException
 from shipproto.finish_first import FinishFirst
 from shipproto.timer import AsyncTimer
 from shipproto.trust_manager import TrustManager
