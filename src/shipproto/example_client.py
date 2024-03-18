@@ -15,6 +15,7 @@ from shipproto.connection_layers.abstract_layer import AbortConnectionException
 from shipproto.connection_layers.cmi_layer import CMILayerClient
 from shipproto.connection_layers.csh_layer import CSHLayer
 from shipproto.connection_layers.cshp_layer import CSHPClientLayer
+from shipproto.connection_layers.pin_layer import PinLayer
 from shipproto.trust_manager import TrustManager
 
 root_logger = logging.getLogger()
@@ -68,6 +69,10 @@ async def main_sme():
             log.debug("Starting CSHP.")
             (version_major, version_minor) = await CSHPClientLayer(websocket, "server").run()
             log.debug("Finished CSHP.")
+
+            log.debug("Starting PIN.")
+            await PinLayer(websocket, "server").run()
+            log.debug("Finished PIN.")
         except AbortConnectionException:
             log.error("Closing connection due to SHIP connection issue.")
             await websocket.close()
