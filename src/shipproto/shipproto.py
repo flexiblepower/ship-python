@@ -14,6 +14,7 @@ import logging
 from shipproto.abstract_layer import AbortConnectionException
 from shipproto.cmi_layer import CMILayerServer
 from shipproto.csh_layer import CSHLayer
+from shipproto.cshp_layer import CSHPServerLayer
 from shipproto.trust_manager import TrustManager
 
 root_logger = logging.getLogger()
@@ -61,7 +62,7 @@ async def main_tls():
 
 
 async def decide_if_ski_is_trusted(ski: str, decide_to_trust: Coroutine[None, None, None]) -> None:
-    sleep_seconds = 140
+    sleep_seconds = 10
     log.debug("Deciding if to trust %s. Waiting %s sec to mimic user input", ski, sleep_seconds)
     await asyncio.sleep(sleep_seconds)
     log.debug("Decided to trust %s", ski)
@@ -76,9 +77,14 @@ async def ship_connection(websocket: WebSocketServerProtocol, url_path: str):
         log.debug("Starting CMI.")
         await CMILayerServer(websocket).run()
         log.debug("Finished CMI.")
+
         log.debug("Starting CSH.")
         await CSHLayer(websocket, trust_manager, "client").run()
         log.debug("Finished CSH.")
+
+        log.debug("Starting CSHP.")
+        (version_major, version_minor) = await CSHPServerLayer(websocket, "client").run()
+        log.debug("Finished CSHP.")
     except AbortConnectionException:
         log.error("Closing connection due to SHIP connection issue.")
         await websocket.close()
